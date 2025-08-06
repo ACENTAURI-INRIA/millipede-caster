@@ -1,0 +1,10 @@
+# Example file for upstream/metadata.
+# See https://wiki.debian.org/UpstreamMetadata for more info/fields.
+# Below an example based on a github project.
+
+# Bug-Database: https://github.com/pbeyssac/millipede-caster/issues
+# Bug-Submit: https://github.com/pbeyssac/millipede-caster/issues/new
+# Changelog: https://github.com/pbeyssac/millipede-caster/blob/master/CHANGES
+# Documentation: https://github.com/pbeyssac/millipede-caster/wiki
+# Repository-Browse: https://github.com/pbeyssac/millipede-caster
+# Repository: https://github.com/pbeyssac/millipede-caster.git
