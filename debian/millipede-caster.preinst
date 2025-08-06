@@ -24,7 +24,7 @@ case "$1" in
         else
             # No old version specified, this is a fresh install.
             echo "Installing millipede-caster for the first time."
-            useradd -r caster || true
+            useradd -r -s /usr/sbin/nologin -m caster || true
         fi
     ;;
 

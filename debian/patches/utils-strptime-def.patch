@@ -1,0 +1,12 @@
+--- a/caster/util.c
++++ b/caster/util.c
+@@ -15,6 +15,9 @@
+ #include "log.h"
+ #include "util.h"
+ 
++extern char *strptime(const char *restrict s, const char *restrict format,
++                      struct tm *restrict tm);
++
+ /*
+  * Compute distance between two geographical points.
+  */

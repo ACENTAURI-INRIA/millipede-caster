@@ -85,7 +85,7 @@ install(TARGETS caster
 configure_file(sample-config/caster.yaml.in caster.yaml @ONLY)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/caster.yaml
         DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/millipede)
-install(FILES sample-config/host.auth sample-config/source.auth sample-config/sourcetable.dat
+install(FILES sample-config/host.auth sample-config/source.auth sample-config/sourcetable.dat sample-config/blocklist
         DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/millipede)
 install(FILES systemd/millipede-caster.service
         DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/systemd/system)
