@@ -1,0 +1,16 @@
+## Description: add some description
+## Origin/Author: add some origin or author
+## Bug: bug URL
+diff --git a/caster/main.c b/caster/main.c
+index 78e09cb..77ce97c 100644
+--- a/caster/main.c
++++ b/caster/main.c
+@@ -72,7 +72,7 @@ main(int argc, char **argv) {
+ 			fprintf(stderr, "Starting daemon as pid %d\n", pid);
+ 			exit(0);
+ 		}
+-		daemon(1, 1);
++		int notused __attribute__((unused)) = daemon(1, 1);
+ 	}
+ 	return caster_main(config_file);
+ }

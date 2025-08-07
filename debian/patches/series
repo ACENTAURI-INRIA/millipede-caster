@@ -1,2 +1,3 @@
 utils-strptime-def.patch
 utils-unused-split-function.patch
+main-warn-unused-result.patch
