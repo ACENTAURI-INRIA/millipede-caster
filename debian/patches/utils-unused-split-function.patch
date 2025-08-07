@@ -1,0 +1,15 @@
+## Description: remove warning about unused function split()
+## Origin/Author: Nicolas Chleq, INRIA
+diff --git a/caster/util.c b/caster/util.c
+index 30c974a..3f7bcbd 100644
+--- a/caster/util.c
++++ b/caster/util.c
+@@ -493,7 +493,7 @@ static void string_array_free(string_array_t *s) {
+  * Python-like split: split string s according to separator sep, at most maxsplits.
+  * Returns an array of char * with number of elements in *count
+  */
+-static string_array_t *split(const char *s, char sep, int maxsplits) {
++static __attribute__((unused)) string_array_t *split(const char *s, char sep, int maxsplits) {
+ 	const char *p;
+ 	int nseps = 0;
+ 	for (p = s; *p; p++) {

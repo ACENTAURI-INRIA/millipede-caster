@@ -1,5 +1,7 @@
 millipede-caster (0.80-1) UNRELEASED; urgency=low
 
   * Initial packaging.
+  * debian/patches/utils-strptime-def.patch: make strptime function declared
+  * debian/patches/utils-unused-split-function.patch: remove warning.
 
  -- Nicolas Chleq <>  Tue, 05 Aug 2025 11:19:39 +0200

@@ -1,0 +1,10 @@
+millipede-caster for Debian
+--------------------------
+
+Millipede is a high-performance NTRIP caster written in C for the CentipedeRTK project, a network of RTK bases based in France (see https://centipede.fr).
+
+Millipede uses libevent2 for minimal memory footprint.
+
+It can easily handle tens of thousands of NTRIP sessions on a minimal server.
+
+See https://github.com/pbeyssac/millipede-caster

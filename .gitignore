@@ -4,6 +4,7 @@ caster/caster
 caster/tests
 build/
 cmake-build-*/
+package/
 CMakeLists.txt.user
 CMakeCache.txt
 CMakeFiles
