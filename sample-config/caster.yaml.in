@@ -11,9 +11,7 @@
 #
 listen:
   - port:		2101
-    ip:			127.0.0.1
-  - port:		2101
-    ip:			::1
+    ip:			0.0.0.0
 
 #
 # Example configuration for a TLS IPv6 port
@@ -27,10 +25,10 @@ listen:
 #
 # Optional caster from which we can get and announce sources.
 #
-#proxy:
-#  - table_refresh_delay:	600
-#    host:			maincaster.fr
-#    port:			2101
+# proxy:
+#   - table_refresh_delay:	600
+#     host:			another.ntripcaster.somewhere.fr
+#     port:			2101
 
 #
 # Optional Graylog log server configuration.
@@ -68,7 +66,7 @@ host_auth_file:		@CMAKE_INSTALL_SYSCONFDIR@/millipede/host.auth
 #
 # Blocklist file path (optional)
 #
-blocklist_file:	blocklist
+blocklist_file:	@CMAKE_INSTALL_SYSCONFDIR@/millipede/blocklist
 
 #
 # Source credentials for local sources and their STR lines

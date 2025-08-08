@@ -1,0 +1,3 @@
+# Set the number of threads the millipede caster can use
+# the default in the systemd unit file is 1
+# NTHREADS=4

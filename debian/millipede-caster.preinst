@@ -24,7 +24,18 @@ case "$1" in
         else
             # No old version specified, this is a fresh install.
             echo "Installing millipede-caster for the first time."
-            useradd -r -s /usr/sbin/nologin -m caster || true
+            if $(id -u caster >/dev/null 2>&1); then \
+                echo "User caster already created."
+            else
+                useradd -r -s /usr/sbin/nologin -m --user-group caster || true
+            fi
+            if [ -d /var/log/millipede ]; then \
+                chown caster:caster /var/log/millipede || true
+            else
+                rm -rf /var/log/millipede || true
+                mkdir -p -m 0755 /var/log/millipede || true
+                chown caster:caster /var/log/millipede || true
+            fi
         fi
     ;;
 

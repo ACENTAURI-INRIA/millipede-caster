@@ -4,7 +4,11 @@ Description=Millipede high-performance NTRIP caster
 [Service]
 Type=simple
 User=caster
-ExecStart=/usr/bin/caster -c /etc/millipede/caster.yaml -d
+Group=caster
+WorkingDirectory=~
+Environment="NTHREADS=1"
+EnvironmentFile=-/etc/millipede/caster.options
+ExecStart=/usr/bin/caster -c /etc/millipede/caster.yaml -t $NTHREADS
 
 [Install]
 WantedBy=multi-user.target
