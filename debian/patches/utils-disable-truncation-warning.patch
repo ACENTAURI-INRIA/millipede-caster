@@ -1,0 +1,18 @@
+## Description: add some description
+## Origin/Author: add some origin or author
+## Bug: bug URL
+diff --git a/caster/util.c b/caster/util.c
+index 30c974a..d30e78b 100644
+--- a/caster/util.c
++++ b/caster/util.c
+@@ -397,7 +397,10 @@ void iso_date_from_timeval(char *iso_date, size_t iso_date_len, struct timeval *
+ 	gmtime_r(&t->tv_sec, &date);
+ 	strftime(iso_date, iso_date_len, "%Y-%m-%dT%H:%M:%SZ", &date);
+ 	if (iso_date_len >= 25)
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wformat-truncation"
+ 		snprintf(iso_date + 19, 6, ".%03ldZ", t->tv_usec/1000);
++#pragma GCC diagnostic pop
+ }
+ 
+ void timeval_from_iso_date(struct timeval *t, const char *iso_date) {

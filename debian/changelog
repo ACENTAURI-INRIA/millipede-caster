@@ -4,5 +4,6 @@ millipede-caster (0.80-1) UNRELEASED; urgency=low
   * debian/patches/utils-strptime-def.patch: make strptime function declared
   * debian/patches/utils-unused-split-function.patch: remove warning.
   * debian/patches/main-warn-unused-result.patch: remove warning about ignored return value.
+  * debian/patches/utils-disable-truncation-warning.patch: remove warning about format truncation
 
  -- Nicolas Chleq <>  Tue, 05 Aug 2025 11:19:39 +0200
