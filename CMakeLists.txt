@@ -106,3 +106,6 @@ install(FILES systemd/caster.options
         PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
 install(FILES systemd/millipede-caster.service
         DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/systemd/system)
+install(FILES debian/logrotate/millipede-caster
+        DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/logrotate.d
+        PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)

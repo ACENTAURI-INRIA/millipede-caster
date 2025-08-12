@@ -1,0 +1,11 @@
+/var/log/millipede/*.log {
+    daily
+    missingok
+    rotate 4
+    compress
+    delaycompress
+    notifempty
+    postrotate
+        systemctl reload millipede-caster.service
+    endscript
+}
