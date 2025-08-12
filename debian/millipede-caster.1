@@ -1,0 +1,79 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.\" (C) Copyright 2025
+.\"
+.\" First parameter, NAME, should be all caps
+.\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
+.\" other parameters are allowed: see man(7), man(1)
+.TH Millipede-caster 1 "August  5 2025"
+.\" Please adjust this date whenever revising the manpage.
+.\"
+.\" Some roff macros, for reference:
+.\" .nh        disable hyphenation
+.\" .hy        enable hyphenation
+.\" .ad l      left justify
+.\" .ad b      justify to both left and right margins
+.\" .nf        disable filling
+.\" .fi        enable filling
+.\" .br        insert line break
+.\" .sp <n>    insert n+1 empty lines
+.\" for manpage-specific macros, see man(7)
+.SH NAME
+millipede-caster \- A high-performance NTRIP caster
+.SH SYNOPSIS
+.B caster
+.RI "[ -c config file ] [ -d ] [ -t nthreads ]"
+.SH DESCRIPTION
+.B Millipede
+is a high-performance NTRIP caster written in C for the CentipedeRTK project, a network of RTK bases based in France (see
+.UR
+https://centipede.fr
+.UE
+).
+This manual page documents briefly the
+.B caster
+command.
+.PP
+.SH OPTIONS
+.TP
+.B \-c path
+set the configuration file to use. The default is /usr/local/etc/millipede/caster.yaml. The Debian package uses /etc/millipede/caster.yaml.
+.TP
+.B \-d
+Run in the background (as a daemon).
+.TP
+.B \-t nthreads
+set the number of threads to use (1-1024, default 1).
+.br
+.SH FILES
+.TP
+.I /etc/millipede/caster.yaml
+Configuration file for the debian package version of the Millipede Caster.
+.TP
+.I /etc/millipede/host.auth
+authentication for client access to external hosts (credentials).
+.TP
+.I /etc/millipede/source.auth
+source authentication
+.TP
+.I /etc/millipede/sourcetable.dat
+caster source table
+.TP
+.I /etc/millipede/blocklist
+connection quota and blocking definition file.
+.TP
+.I /etc/millipede/caster.options
+options for the systemd managed caster service.
+.TP
+.I /etc/logrotate.d/millipede-caster
+configuration file for
+.B logrotate
+to handle the logfiles in
+.I /var/log/millipede
+.SH HOMEPAGE
+.UR
+https://github.com/pbeyssac/millipede-caster
+.UE
+
+.UR
+https://centipede.fr
+.UE
