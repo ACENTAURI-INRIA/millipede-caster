@@ -3,3 +3,4 @@ utils-unused-split-function.patch
 main-warn-unused-result.patch
 utils-disable-truncation-warning.patch
 cmakelists-for-packaging.patch
+cmakelists-pkgconfig-targets.diff

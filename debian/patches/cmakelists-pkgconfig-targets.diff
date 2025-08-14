@@ -1,0 +1,118 @@
+Description: use cmake targets with packages found with pkg-config.
+Author: NC
+Origin: other
+Last-Update: 2025-08-14
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -16,41 +16,40 @@
+ list(REMOVE_ITEM SOURCES ${TESTS_C_ABS})
+ 
+ find_package(PkgConfig REQUIRED)
+-pkg_search_module(OPENSSL openssl REQUIRED)
+-if (NOT OPENSSL_FOUND)
+-    message(FATAL_ERROR "OpenSSL not found. Please install OpenSSL development package (libssl-dev).")
+-endif()
++find_package(OpenSSL REQUIRED)
++# pkg_search_module(OPENSSL openssl REQUIRED)
++# if (NOT OPENSSL_FOUND)
++#     message(FATAL_ERROR "OpenSSL not found. Please install OpenSSL development package (libssl-dev).")
++# endif()
+ 
+-pkg_search_module(LIBCYAML libcyaml REQUIRED)
+-if (NOT LIBCYAML_FOUND)
++pkg_search_module(LibCyaml REQUIRED IMPORTED_TARGET GLOBAL libcyaml)
++if (NOT LibCyaml_FOUND)
+     message(FATAL_ERROR "libcyaml not found. Please install libcyaml development package (libcyaml-dev).")
+ endif()
+-pkg_search_module(LIBYAML yaml-0.1 REQUIRED)
+-if (NOT LIBYAML_FOUND)
++pkg_search_module(LibYaml REQUIRED IMPORTED_TARGET GLOBAL yaml-0.1)
++if (NOT LibYaml_FOUND)
+     message(FATAL_ERROR "libyaml not found. Please install libyaml development package (libyaml-dev).")
+ endif()
+ 
+-pkg_search_module(EVENT libevent REQUIRED)
+-if (NOT EVENT_FOUND)
+-    message(FATAL_ERROR "libevent not found. Please install libevent development package (libevent-dev).")
+-endif()
+-pkg_search_module(EVENT_CORE libevent_core REQUIRED)
+-if (NOT EVENT_CORE_FOUND)
+-    message(FATAL_ERROR "libevent_core not found. Please install libevent development package (libevent-dev).")
+-endif()
+-pkg_search_module(EVENT_PTHREADS libevent_pthreads REQUIRED)
+-if (NOT EVENT_PTHREADS_FOUND)
+-    message(FATAL_ERROR "libevent_pthreads not found. Please install libevent development package (libevent-dev).")
+-endif()
+-pkg_search_module(EVENT_EXTRA libevent_extra REQUIRED)
+-if (NOT EVENT_EXTRA_FOUND)
+-    message(FATAL_ERROR "libevent_extra not found. Please install libevent development package (libevent-dev).")
+-endif()
+-pkg_search_module(EVENT_OPENSSL libevent_openssl REQUIRED)
+-if (NOT EVENT_OPENSSL_FOUND)
+-    message(FATAL_ERROR "libevent_openssl not found. Please install libevent development package (libevent-dev).")
+-endif()
++# Newer version of libevent provides a cmake config file, try to find it first
++# and fallback to pkg-config if not found.
++find_package(Libevent QUIET COMPONENTS core pthreads extra openssl)
++if (NOT Libevent_FOUND)
++    message(STATUS "Libevent not found via CMake, falling back to pkg-config.")
++    # When using pkg-config, we need to create aliases for the components with the same names as in the CMake config
++    pkg_search_module(Event_core REQUIRED IMPORTED_TARGET GLOBAL libevent_core)
++    add_library(libevent::core ALIAS PkgConfig::Event_core)
++
++    pkg_search_module(Event_pthreads REQUIRED IMPORTED_TARGET GLOBAL libevent_pthreads)
++    add_library(libevent::pthreads ALIAS PkgConfig::Event_pthreads)
++
++    pkg_search_module(Event_extra REQUIRED IMPORTED_TARGET GLOBAL libevent_extra)
++    add_library(libevent::extra ALIAS PkgConfig::Event_extra)
+ 
++    pkg_search_module(Event_openssl REQUIRED IMPORTED_TARGET GLOBAL libevent_openssl)
++    add_library(libevent::openssl ALIAS PkgConfig::Event_openssl)
++
++endif()
+ find_package(json-c REQUIRED)
+ set(THREADS_PREFER_PTHREAD_FLAG ON)
+ find_package(Threads REQUIRED)
+@@ -60,32 +59,18 @@
+     add_executable(tests caster/tests.c caster/util.c)
+ endif()
+ 
+-target_include_directories(caster PRIVATE
+-                            ${OPENSSL_INCLUDE_DIRS} ${LIBCYAML_INCLUDE_DIRS} ${LIBYAML_INCLUDE_DIRS}
+-                            ${EVENT_CORE_INCLUDE_DIRS} ${EVENT_PTHREADS_INCLUDE_DIRS}
+-                            ${EVENT_EXTRA_INCLUDE_DIRS})
+-target_link_directories(caster PRIVATE
+-                            ${OPENSSL_LIBRARY_DIRS} ${LIBCYAML_LIBRARY_DIRS} ${LIBYAML_LIBRARY_DIRS}
+-                            ${EVENT_CORE_LIBRARY_DIRS} ${EVENT_PTHREADS_LIBRARY_DIRS}
+-                            ${EVENT_EXTRA_LIBRARY_DIRS})
+ target_link_libraries(caster PRIVATE
+-                            ${OPENSSL_LIBRARIES} ${LIBCYAML_LIBRARIES} ${LIBYAML_LIBRARIES}
+-                            ${EVENT_CORE_LIBRARIES} ${EVENT_PTHREADS_LIBRARIES}
+-                            ${EVENT_EXTRA_LIBRARIES} ${EVENT_OPENSSL_LIBRARIES} ${OPENSSL_LIBRARIES}
++                            OpenSSL::SSL OpenSSL::Crypto
++                            PkgConfig::LibCyaml PkgConfig::LibYaml
++                            libevent::core libevent::pthreads
++                            libevent::extra libevent::openssl
+                             json-c m Threads::Threads)
+ if (BUILD_TESTS)
+-target_include_directories(tests PRIVATE
+-                            ${OPENSSL_INCLUDE_DIRS} ${LIBCYAML_INCLUDE_DIRS}
+-                            ${EVENT_CORE_INCLUDE_DIRS} ${EVENT_PTHREADS_INCLUDE_DIRS}
+-                            ${EVENT_EXTRA_INCLUDE_DIRS})
+-target_link_directories(tests PRIVATE
+-                            ${OPENSSL_LIBRARY_DIRS} ${LIBCYAML_LIBRARY_DIRS}
+-                            ${EVENT_CORE_LIBRARY_DIRS} ${EVENT_PTHREADS_LIBRARY_DIRS}
+-                            ${EVENT_EXTRA_LIBRARY_DIRS})
+ target_link_libraries(tests PRIVATE
+-                            ${OPENSSL_LIBRARIES} ${LIBCYAML_LIBRARIES} ${LIBYAML_LIBRARIES}
+-                            ${EVENT_CORE_LIBRARIES} ${EVENT_PTHREADS_LIBRARIES}
+-                            ${EVENT_EXTRA_LIBRARIES} ${EVENT_OPENSSL_LIBRARIES} ${OPENSSL_LIBRARIES}
++                            OpenSSL::SSL OpenSSL::Crypto
++                            PkgConfig::LibCyaml PkgConfig::LibYaml
++                            libevent::core libevent::pthreads
++                            libevent::extra libevent::openssl
+                             json-c m Threads::Threads)
+ endif()
+ 
